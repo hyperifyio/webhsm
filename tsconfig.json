@@ -1,0 +1,12 @@
+{
+    "extends": "@tsconfig/recommended/tsconfig.json",
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "None",
+        "lib": ["webworker", "dom", "es6"],
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "strict": true
+    },
+    "include": ["src/**/*"]
+}

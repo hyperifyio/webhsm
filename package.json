@@ -1,0 +1,23 @@
+{
+  "name": "webhsm",
+  "version": "0.0.1",
+  "description": "SoftHSM for web",
+  "main": "dist/webhsm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "softhsm",
+    "hsm",
+    "webhsm"
+  ],
+  "author": "Jaakko Heusala <jhh@hg.fi>",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.3",
+    "typescript": "^5.4.2"
+  },
+  "dependencies": {
+    "@types/golang-wasm-exec": "^1.15.2"
+  }
+}

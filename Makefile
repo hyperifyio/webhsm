@@ -3,16 +3,22 @@ WASM_EXEC_JS := $(shell go env GOROOT)/misc/wasm/wasm_exec.js
 
 all: build
 
-.PHONY: build js wasm examples clean
+.PHONY: build js wasm examples clean protocols lib
 
-build: js wasm webhsm examples
+build: js wasm webhsm examples protocols lib
 
 js: tsc
+
+protocols:
+	$(MAKE) -C ./internal/protocols build
+
+lib:
+	$(MAKE) -C ./lib build
 
 wasm: dist/webhsm.wasm dist/wasm_exec.js
 
 examples:
-	make -C ./examples/myworker build
+	$(MAKE) -C ./examples/myworker build
 
 webhsm: ./webhsm.go ./dist/webhsm.js ./dist/wasm_exec.js ./dist/webhsm.wasm ./dist/webhsm-worker.js ./dist/webhsm.html
 	go build -o webhsm ./webhsm.go
@@ -42,4 +48,6 @@ clean:
 	  dist/webhsm.html \
 	  webhsm
 	test -d dist && rmdir dist || true
-	make -C ./examples/myworker clean
+	$(MAKE) -C ./examples/myworker clean
+	$(MAKE) -C ./internal/protocols clean
+	$(MAKE) -C ./lib clean

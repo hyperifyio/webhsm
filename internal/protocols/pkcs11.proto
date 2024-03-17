@@ -1,0 +1,610 @@
+syntax = "proto3";
+
+package webhsm;
+option go_package = "github.com/hyperifyio/webhsm/internal/protocols";
+
+// Represents a single PKCS#11 attribute
+message Attribute {
+  uint32 type = 1;
+  bytes value = 2;
+}
+
+// Represents a mechanism and its parameters
+message Mechanism {
+  uint32 mechanism = 1;
+  bytes parameter = 2;
+}
+
+// OpenSession
+
+message OpenSessionRequest {
+  uint64 slotID = 1;
+  uint64 flags = 2;
+}
+
+message OpenSessionResponse {
+  uint64 sessionHandle = 1;
+  string error = 2;
+}
+
+// CloseSession
+
+message CloseSessionRequest {
+  uint64 sessionHandle = 1;
+}
+
+message CloseSessionResponse {
+  string error = 2;
+}
+
+// Request and response messages for CloseAllSessions
+message CloseAllSessionsRequest {
+  uint64 slotID = 1;
+}
+
+message CloseAllSessionsResponse {
+  string error = 2;
+}
+
+// Request and response messages for GetSessionInfo
+message GetSessionInfoRequest {
+  uint64 sessionHandle = 1;
+}
+
+message GetSessionInfoResponse {
+  uint64 slotID = 1;
+  uint32 state = 2;
+  uint64 flags = 3;
+  uint32 deviceError = 4;
+  string error = 5;
+}
+
+// Request and response messages for Login
+message LoginRequest {
+  uint64 sessionHandle = 1;
+  uint32 userType = 2;
+  string pin = 3;
+}
+
+message LoginResponse {
+  string error = 2;
+}
+
+// Request and response messages for Logout
+message LogoutRequest {
+  uint64 sessionHandle = 1;
+}
+
+message LogoutResponse {
+  string error = 2;
+}
+
+// Request and response messages for CreateObject
+message CreateObjectRequest {
+  uint64 sessionHandle = 1;
+  repeated Attribute attributes = 2;
+}
+
+message CreateObjectResponse {
+  uint64 objectHandle = 1;
+  string error = 2;
+}
+
+// Request and response messages for CopyObject
+message CopyObjectRequest {
+  uint64 sessionHandle = 1;
+  uint64 objectHandle = 2;
+  repeated Attribute attributes = 3;
+}
+
+message CopyObjectResponse {
+  uint64 newObjectHandle = 1;
+  string error = 2;
+}
+
+// Request and response messages for DestroyObject
+message DestroyObjectRequest {
+  uint64 sessionHandle = 1;
+  uint64 objectHandle = 2;
+}
+
+message DestroyObjectResponse {
+  string error = 1;
+}
+
+// Request and response messages for GetObjectSize
+message GetObjectSizeRequest {
+  uint64 sessionHandle = 1;
+  uint64 objectHandle = 2;
+}
+
+message GetObjectSizeResponse {
+  uint64 size = 1;
+  string error = 2;
+}
+
+// Request and response messages for GetAttributeValue
+message GetAttributeValueRequest {
+  uint64 sessionHandle = 1;
+  uint64 objectHandle = 2;
+  repeated Attribute attributes = 3;
+}
+
+message GetAttributeValueResponse {
+  repeated Attribute attributes = 1;
+  string error = 2;
+}
+
+// Request and response messages for SetAttributeValue
+message SetAttributeValueRequest {
+  uint64 sessionHandle = 1;
+  uint64 objectHandle = 2;
+  repeated Attribute attributes = 3;
+}
+
+message SetAttributeValueResponse {
+  string error = 1;
+}
+
+// Request and response messages for FindObjectsInit
+message FindObjectsInitRequest {
+  uint64 sessionHandle = 1;
+  repeated Attribute template = 2;
+}
+
+message FindObjectsInitResponse {
+  string error = 1;
+}
+
+// Request and response messages for FindObjects
+message FindObjectsRequest {
+  uint64 sessionHandle = 1;
+  uint32 maxObjectCount = 2;
+}
+
+message FindObjectsResponse {
+  repeated uint64 objectHandles = 1;
+  bool moreObjects = 2;
+  string error = 3;
+}
+
+// Request and response messages for FindObjectsFinal
+message FindObjectsFinalRequest {
+  uint64 sessionHandle = 1;
+}
+
+message FindObjectsFinalResponse {
+  string error = 1;
+}
+
+// Request and response messages for EncryptInit
+message EncryptInitRequest {
+  uint64 sessionHandle = 1;
+  repeated Mechanism mechanisms = 2;
+  uint64 objectHandle = 3;
+}
+
+message EncryptInitResponse {
+  string error = 1;
+}
+
+// Request and response messages for Encrypt
+message EncryptRequest {
+  uint64 sessionHandle = 1;
+  bytes message = 2;
+}
+
+message EncryptResponse {
+  bytes encryptedData = 1;
+  string error = 2;
+}
+
+// Request and response messages for EncryptUpdate
+message EncryptUpdateRequest {
+  uint64 sessionHandle = 1;
+  bytes part = 2;
+}
+
+message EncryptUpdateResponse {
+  bytes encryptedPart = 1;
+  string error = 2;
+}
+
+// Request and response messages for EncryptFinal
+message EncryptFinalRequest {
+  uint64 sessionHandle = 1;
+}
+
+message EncryptFinalResponse {
+  bytes lastEncryptedPart = 1;
+  string error = 2;
+}
+
+// Request and response messages for DecryptInit
+message DecryptInitRequest {
+  uint64 sessionHandle = 1;
+  repeated Mechanism mechanisms = 2;
+  uint64 objectHandle = 3;
+}
+
+message DecryptInitResponse {
+  string error = 1;
+}
+
+// Request and response messages for Decrypt
+message DecryptRequest {
+  uint64 sessionHandle = 1;
+  bytes cipherText = 2;
+}
+
+message DecryptResponse {
+  bytes decryptedData = 1;
+  string error = 2;
+}
+
+// Request and response messages for DecryptUpdate
+message DecryptUpdateRequest {
+  uint64 sessionHandle = 1;
+  bytes part = 2;
+}
+
+message DecryptUpdateResponse {
+  bytes decryptedPart = 1;
+  string error = 2;
+}
+
+// Request and response messages for DecryptFinal
+message DecryptFinalRequest {
+  uint64 sessionHandle = 1;
+}
+
+message DecryptFinalResponse {
+  bytes lastDecryptedPart = 1;
+  string error = 2;
+}
+
+// Request and response messages for SignInit
+message SignInitRequest {
+  uint64 sessionHandle = 1;
+  repeated Mechanism mechanisms = 2;
+  uint64 objectHandle = 3;
+}
+
+message SignInitResponse {
+  string error = 1;
+}
+
+// Request and response messages for Sign
+message SignRequest {
+  uint64 sessionHandle = 1;
+  bytes message = 2;
+}
+
+message SignResponse {
+  bytes signature = 1;
+  string error = 2;
+}
+
+// Request and response messages for SignUpdate
+message SignUpdateRequest {
+  uint64 sessionHandle = 1;
+  bytes part = 2;
+}
+
+message SignUpdateResponse {
+  string error = 1;
+}
+
+// Request and response messages for SignFinal
+message SignFinalRequest {
+  uint64 sessionHandle = 1;
+}
+
+message SignFinalResponse {
+  bytes signature = 1;
+  string error = 2;
+}
+
+// Request and response messages for SignRecoverInit
+message SignRecoverInitRequest {
+  uint64 sessionHandle = 1;
+  repeated Mechanism mechanisms = 2;
+  uint64 key = 3;
+}
+
+message SignRecoverInitResponse {
+  string error = 1;
+}
+
+// Request and response messages for SignRecover
+message SignRecoverRequest {
+  uint64 sessionHandle = 1;
+  bytes data = 2;
+}
+
+message SignRecoverResponse {
+  bytes signature = 1;
+  string error = 2;
+}
+
+// Request and response messages for VerifyInit
+message VerifyInitRequest {
+  uint64 sessionHandle = 1;
+  repeated Mechanism mechanisms = 2;
+  uint64 key = 3;
+}
+
+message VerifyInitResponse {
+  string error = 1;
+}
+
+// Request and response messages for Verify
+message VerifyRequest {
+  uint64 sessionHandle = 1;
+  bytes data = 2;
+  bytes signature = 3;
+}
+
+message VerifyResponse {
+  string error = 1;
+}
+
+// Request and response messages for VerifyUpdate
+message VerifyUpdateRequest {
+  uint64 sessionHandle = 1;
+  bytes part = 2;
+}
+
+message VerifyUpdateResponse {
+  string error = 1;
+}
+
+// Request and response messages for VerifyFinal
+message VerifyFinalRequest {
+  uint64 sessionHandle = 1;
+  bytes signature = 2;
+}
+
+message VerifyFinalResponse {
+  string error = 1;
+}
+
+// Request and response messages for VerifyRecoverInit
+message VerifyRecoverInitRequest {
+  uint64 sessionHandle = 1;
+  repeated Mechanism mechanisms = 2;
+  uint64 key = 3;
+}
+
+message VerifyRecoverInitResponse {
+  string error = 1;
+}
+
+// Request and response messages for VerifyRecover
+message VerifyRecoverRequest {
+  uint64 sessionHandle = 1;
+  bytes signature = 2;
+}
+
+message VerifyRecoverResponse {
+  bytes data = 1;
+  string error = 2;
+}
+
+// Request and response messages for DigestInit
+message DigestInitRequest {
+  uint64 sessionHandle = 1;
+  repeated Mechanism mechanisms = 2;
+}
+
+message DigestInitResponse {
+  string error = 1;
+}
+
+// Request and response messages for Digest
+message DigestRequest {
+  uint64 sessionHandle = 1;
+  bytes message = 2;
+}
+
+message DigestResponse {
+  bytes digest = 1;
+  string error = 2;
+}
+
+// Request and response messages for DigestUpdate
+message DigestUpdateRequest {
+  uint64 sessionHandle = 1;
+  bytes message = 2;
+}
+
+message DigestUpdateResponse {
+  string error = 1;
+}
+
+// Request and response messages for DigestKey
+message DigestKeyRequest {
+  uint64 sessionHandle = 1;
+  uint64 key = 2;
+}
+
+message DigestKeyResponse {
+  string error = 1;
+}
+
+// Request and response messages for DigestFinal
+message DigestFinalRequest {
+  uint64 sessionHandle = 1;
+}
+
+message DigestFinalResponse {
+  bytes digest = 1;
+  string error = 2;
+}
+
+// Request and response messages for GenerateKey
+message GenerateKeyRequest {
+  uint64 sessionHandle = 1;
+  repeated Mechanism mechanisms = 2;
+  repeated Attribute template = 3;
+}
+
+message GenerateKeyResponse {
+  uint64 objectHandle = 1;
+  string error = 2;
+}
+
+// Request and response messages for GenerateKeyPair
+message GenerateKeyPairRequest {
+  uint64 sessionHandle = 1;
+  repeated Mechanism mechanisms = 2;
+  repeated Attribute publicTemplate = 3;
+  repeated Attribute privateTemplate = 4;
+}
+
+message GenerateKeyPairResponse {
+  uint64 publicObjectHandle = 1;
+  uint64 privateObjectHandle = 2;
+  string error = 3;
+}
+
+// Request and response messages for WrapKey
+message WrapKeyRequest {
+  uint64 sessionHandle = 1;
+  repeated Mechanism mechanisms = 2;
+  uint64 wrappingKey = 3;
+  uint64 key = 4;
+}
+
+message WrapKeyResponse {
+  bytes wrappedKey = 1;
+  string error = 2;
+}
+
+// Request and response messages for UnwrapKey
+message UnwrapKeyRequest {
+  uint64 sessionHandle = 1;
+  repeated Mechanism mechanisms = 2;
+  uint64 unwrappingKey = 3;
+  bytes wrappedKey = 4;
+  repeated Attribute template = 5;
+}
+
+message UnwrapKeyResponse {
+  uint64 objectHandle = 1;
+  string error = 2;
+}
+
+// Request and response messages for DeriveKey
+message DeriveKeyRequest {
+  uint64 sessionHandle = 1;
+  repeated Mechanism mechanisms = 2;
+  uint64 baseKey = 3;
+  repeated Attribute template = 4;
+}
+
+message DeriveKeyResponse {
+  uint64 objectHandle = 1;
+  string error = 2;
+}
+
+// Request and response messages for SeedRandom
+message SeedRandomRequest {
+  uint64 sessionHandle = 1;
+  bytes seed = 2;
+}
+
+message SeedRandomResponse {
+  string error = 2;
+}
+
+// Request and response messages for GenerateRandom
+message GenerateRandomRequest {
+  uint64 sessionHandle = 1;
+  int32 length = 2;
+}
+
+message GenerateRandomResponse {
+  bytes randomData = 1;
+  string error = 2;
+}
+
+// Request and response messages for WaitForSlotEvent
+message WaitForSlotEventRequest {
+  uint64 flags = 1;
+}
+
+message WaitForSlotEventResponse {
+  uint64 slotID = 1;
+  string error = 2;
+}
+
+// Define a service for these operations
+service PKCS11Service {
+
+  // Token and Session Management
+
+  rpc OpenSession(OpenSessionRequest) returns (OpenSessionResponse);
+  rpc CloseSession(CloseSessionRequest) returns (CloseSessionResponse);
+  rpc CloseAllSessions(CloseAllSessionsRequest) returns (CloseAllSessionsResponse);
+  rpc GetSessionInfo(GetSessionInfoRequest) returns (GetSessionInfoResponse);
+  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc Logout(LogoutRequest) returns (LogoutResponse);
+
+  // Object Management
+  rpc CreateObject(CreateObjectRequest) returns (CreateObjectResponse);
+  rpc CopyObject(CopyObjectRequest) returns (CopyObjectResponse);
+  rpc DestroyObject(DestroyObjectRequest) returns (DestroyObjectResponse);
+  rpc GetObjectSize(GetObjectSizeRequest) returns (GetObjectSizeResponse);
+  rpc GetAttributeValue(GetAttributeValueRequest) returns (GetAttributeValueResponse);
+  rpc SetAttributeValue(SetAttributeValueRequest) returns (SetAttributeValueResponse);
+  rpc FindObjectsInit(FindObjectsInitRequest) returns (FindObjectsInitResponse);
+  rpc FindObjects(FindObjectsRequest) returns (FindObjectsResponse);
+  rpc FindObjectsFinal(FindObjectsFinalRequest) returns (FindObjectsFinalResponse);
+
+  // Encryption and Decryption
+  rpc EncryptInit(EncryptInitRequest) returns (EncryptInitResponse);
+  rpc Encrypt(EncryptRequest) returns (EncryptResponse);
+  rpc EncryptUpdate(EncryptUpdateRequest) returns (EncryptUpdateResponse);
+  rpc EncryptFinal(EncryptFinalRequest) returns (EncryptFinalResponse);
+  rpc DecryptInit(DecryptInitRequest) returns (DecryptInitResponse);
+  rpc Decrypt(DecryptRequest) returns (DecryptResponse);
+  rpc DecryptUpdate(DecryptUpdateRequest) returns (DecryptUpdateResponse);
+  rpc DecryptFinal(DecryptFinalRequest) returns (DecryptFinalResponse);
+
+  // Signing and Verification
+  rpc SignInit(SignInitRequest) returns (SignInitResponse);
+  rpc Sign(SignRequest) returns (SignResponse);
+  rpc SignUpdate(SignUpdateRequest) returns (SignUpdateResponse);
+  rpc SignFinal(SignFinalRequest) returns (SignFinalResponse);
+  rpc SignRecoverInit(SignRecoverInitRequest) returns (SignRecoverInitResponse);
+  rpc SignRecover(SignRecoverRequest) returns (SignRecoverResponse);
+  rpc VerifyInit(VerifyInitRequest) returns (VerifyInitResponse);
+  rpc Verify(VerifyRequest) returns (VerifyResponse);
+  rpc VerifyUpdate(VerifyUpdateRequest) returns (VerifyUpdateResponse);
+  rpc VerifyFinal(VerifyFinalRequest) returns (VerifyFinalResponse);
+  rpc VerifyRecoverInit(VerifyRecoverInitRequest) returns (VerifyRecoverInitResponse);
+  rpc VerifyRecover(VerifyRecoverRequest) returns (VerifyRecoverResponse);
+
+  // Digesting
+  rpc DigestInit(DigestInitRequest) returns (DigestInitResponse);
+  rpc Digest(DigestRequest) returns (DigestResponse);
+  rpc DigestUpdate(DigestUpdateRequest) returns (DigestUpdateResponse);
+  rpc DigestKey(DigestKeyRequest) returns (DigestKeyResponse);
+  rpc DigestFinal(DigestFinalRequest) returns (DigestFinalResponse);
+
+  // Key Management
+  rpc GenerateKey(GenerateKeyRequest) returns (GenerateKeyResponse);
+  rpc GenerateKeyPair(GenerateKeyPairRequest) returns (GenerateKeyPairResponse);
+  rpc WrapKey(WrapKeyRequest) returns (WrapKeyResponse);
+  rpc UnwrapKey(UnwrapKeyRequest) returns (UnwrapKeyResponse);
+  rpc DeriveKey(DeriveKeyRequest) returns (DeriveKeyResponse);
+
+  // Random Number Generation
+  rpc SeedRandom(SeedRandomRequest) returns (SeedRandomResponse);
+  rpc GenerateRandom(GenerateRandomRequest) returns (GenerateRandomResponse);
+
+  // Other Operations
+  rpc WaitForSlotEvent(WaitForSlotEventRequest) returns (WaitForSlotEventResponse);
+
+}

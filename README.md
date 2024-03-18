@@ -2,8 +2,8 @@
 
 ## Development Status
 
-See [WebHSM MVPv1](https://github.com/hyperifyio/webhsm/issues/1). We organize 
-our work in a simple Project -> Task -> Subtask hierarchy.
+See [PKCS11 Compatibility](https://github.com/hyperifyio/webhsm/issues/4). We organize 
+our work in a simple Project (use case) -> Task -> Subtask hierarchy.
 
 ## Overview
 

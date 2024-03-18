@@ -1,34 +1,43 @@
-# hyperifyio/webhsm
+# `webhsm` by [HyperifyIO](https://github.com/hyperifyio): Revolutionizing Web Application Security
 
-## Development Status
+`webhsm` contributes to HyperifyIO's broader vision of enhancing digital 
+security through innovative solutions for custom Public Key Infrastructure 
+(PKI). As a pivotal element of our security toolkit, it addresses the critical 
+need for secure cryptographic operations within web applications.
+
+## Reinventing Cryptographic Security for the Web
+
+`webhsm` offers a groundbreaking SoftHSM solution tailored for the unique 
+challenges of web environments. It provides a PKCS#11 compatible API that 
+allows web applications to securely manage cryptographic private keys inside 
+the browser's IndexDB. The genius of `webhsm` lies in its novel approach to 
+securing sensitive information: it prevents direct access by front-end 
+applications, requiring the use of its PKCS#11 API for any cryptographic 
+actions.
+
+## Architectural Innovation
+
+At the core of `webhsm`'s security model is its ability to operate in a 
+distinct cross-origin context, ensuring that cryptographic keys and operations 
+are securely isolated from the main application. This is achieved through a 
+combination of iframes and web workers, with the latter running Go-compiled 
+WebAssembly (wasm) to perform cryptographic tasks. This innovative architecture 
+not only enhances security but also maintains the integrity of the 
+cryptographic operations.
+
+## Mission-Critical Security
+
+The primary mission of `webhsm` is to lay the foundation for mutual TLS (mTLS) 
+in client-side applications, enabling the secure management and storage of 
+client x509 certificates and their private keys. This is essential for 
+establishing secure client-server communications within web applications, 
+making `webhsm` an indispensable tool for developers looking to bolster their 
+app's security.
+
+## Development
 
 See [PKCS11 Compatibility](https://github.com/hyperifyio/webhsm/issues/4). We organize 
-our work in a simple Project (use case) -> Task -> Subtask hierarchy.
-
-## Overview
-
-`webhsm` is a SoftHSM solution designed specifically for web applications. It 
-offers a secure, PKCS#11 compatible API, enabling web apps to securely store 
-cryptographic private keys within the browser's IndexDB. The key innovation of 
-`webhsm` is its ability to safeguard secrets in such a manner that front-end 
-applications are restricted from directly accessing them; instead, they must 
-utilize the PKCS#11 compatible API for any cryptographic operations.
-
-## Architecture
-
-The security model of `webhsm` hinges on operating from a separate cross-origin 
-context. This isolation is achieved through the use of an iframe, which serves
-as the environment for initiating a web worker. The web worker, developed in Go 
-and compiled to WebAssembly (wasm), executes the cryptographic operations. This 
-approach ensures that the cryptographic keys and operations are insulated from 
-the main application context, enhancing security and integrity.
-
-## Primary Objective
-
-The initial aim of `webhsm` is to support the foundational requirements for 
-mutual TLS (mTLS) in client-side applications. This encompasses secure storage 
-and management of client x509 certificates and their corresponding private keys,
-facilitating secure client-server communication within web applications.
+our work in a simple Project (or use case) -> Task -> Subtask hierarchy.
 
 ## Features
 
